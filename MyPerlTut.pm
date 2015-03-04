@@ -67,7 +67,6 @@ sub demo_array {
     my $self = shift;
     my $mfn = (caller(0))[3];
     $self->prog($mfn);
-    $self->show_prog();
     my @arr = ("text", 1, 1.2, 'anything', -44);
     $arr[9] = "tail";
     my $alen = @arr;
@@ -94,6 +93,9 @@ sub demo_array {
 }
 
 sub demo_hash {
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
     my %hmap = ("k1", "v1", k2 => "v2");
     $hmap{"k3"} = 3;
     print "hash: %hmap\n";
@@ -143,6 +145,9 @@ sub dub {
 }
 
 sub demo_flowcntl {
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
     my $testv = 9;
     my @testarr = (3, "gg", "_h_", 9, 10, 77.3);
     my %testmap = ('k1'=>5, "k2"=>9, 3=>"v3");
@@ -204,6 +209,9 @@ sub func_hash_ref {
 }
 
 sub demo_funcRef {
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
 # reference of func
     my $funcref = \&func_hash;
     my %testmap = ('k1'=>5, "k2"=>9, 3=>"v3");
@@ -217,6 +225,9 @@ sub demo_funcRef {
 }
 
 sub demo_datetime {
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
     my @ltime = localtime();
 # sec, # seconds of minutes from 0 to 61 
 # min, # minutes of hour from 0 to 59 
@@ -240,6 +251,9 @@ sub demo_datetime {
 }
 
 sub demo_fileio {
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
 # associate filehandle with file
 # open(FHND, mode, fname); where FHND is the filehandle name
 # predefined filehandles: STDIN, STDOUT, STDERR
@@ -311,6 +325,9 @@ sub demo_fileio {
 }
 
 sub demo_regx {
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
 # REGEXP refer to "perldoc perlre"
 # Match Regular Expression - m// 
 # Substitute Regular Expression - s///  
@@ -364,6 +381,9 @@ sub func_err {
 }
 
 sub demo_carp {
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
     &func_err();
 }
 
