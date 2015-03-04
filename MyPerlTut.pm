@@ -377,16 +377,30 @@ sub demo_regx {
 use Carp;
 
 sub func_err {
-    confess "stumbled on Error!";
+    confess "stumbled on Error!\n @_";
 }
 
 sub demo_carp {
     my ($self) = @_;
     my $mfn = (caller(0))[3];
     $self->prog($mfn);
-    &func_err();
+    &func_err("demo purpose\n");
 }
 
+# defualt autoload func for error handling
+use vars qw($AUTOLOAD);
+sub AUTOLOAD {
+    my ($self) = @_;
+    my $type = ref($self);
+    &func_err("$AUTOLOAD is not defined in $type\n");
+}
+
+# deconstructor called automatically by perl when the object is freed
+sub DESTROY {
+    my ($self) = @_;
+    print "Tutorial concluded for $self->{_usrname}\n";
+    $self->show_prog();
+}
 # Perl modules are required to return a value to signal if the require directive must succeed
 1;
 
