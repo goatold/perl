@@ -1,18 +1,18 @@
-Fundamental:
--	General intro: what’s perl, bg info etc.
--	Syntax: 
-  -	Variables (scalar, array, hash, reference)
-  -	subroutines
-  -	flow control (conditional, loop)
--	Common drills:  
-  -	file IO, Datetime
-  -	OOP: class/object
-  -	Regexp: match, substitute, translate
-  -	Erro Handling
-Extended:
--	Coding style: perlstyle/perltidy
--	Module management: CPAN
--	Getting help: perldoc
--	Windows api: Win32::OLE
--	Debug/Profiling
--	Working/comparing  with other scripts: Bash, Python
+- Fundamental:
+  -	General intro: what’s perl, bg info etc.
+  -	Syntax: 
+    -	Variables (scalar, array, hash, reference)
+    -	subroutines
+    -	flow control (conditional, loop)
+  -	Common drills:  
+    -	file IO, Datetime
+    -	OOP: class/object
+    -	Regexp: match, substitute, translate
+    -	Erro Handling
+- Extended:
+  -	Coding style: perlstyle/perltidy
+  -	Module management: CPAN
+  -	Getting help: perldoc
+  -	Windows api: Win32::OLE
+  -	Debug/Profiling
+  -	Working/comparing  with other scripts: Bash, Python
