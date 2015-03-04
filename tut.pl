@@ -1,7 +1,7 @@
 #!/usr/bin/perl
-use MyPerlTut;
+use MyPerlTutExt;
 
-my $mytut = new MyPerlTut("Leow");
+my $mytut = new MyPerlTutExt("Leow");
 
 &MyPerlTut::dub(6);
 $mytut->demo_scavar();
@@ -12,5 +12,6 @@ $mytut->demo_funcRef();
 $mytut->demo_datetime();
 $mytut->demo_fileio();
 $mytut->demo_regx();
-$mytut->show_prog();
+
+$mytut->demo_xxx();
 
