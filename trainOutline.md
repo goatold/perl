@@ -1,18 +1,42 @@
 - Fundamental:
-  -	General intro: what’s perl, bg info etc.
+  -	General intro
+    - what’s perl
+    - General language features, characteristics
+    - Philosophy
+    - Activity status
   -	Syntax: 
     -	Variables (scalar, array, hash, reference)
+      -	types
+      -	usages and operations
+      -	samples
     -	subroutines
+      -	defination and calling
+      -	arguments
     -	flow control (conditional, loop)
+      -	if elsif else
+      -	switch
+      -	for
+      -	while
+      -	foreach
   -	Common drills:  
-    -	file IO, Datetime
-    -	OOP: class/object
-    -	Regexp: match, substitute, translate
+    -	file and directory operations
+    -	Datetime fuctions
+    -	Process management
+    -	OOP
+      -	class/object
+      -	inheritence
+    -	Regexp
+      -	match
+      -	substitute
+      -	translate
     -	Erro Handling
+      -	die/warn
+      -	carp
+      -	try/catch
 - Extended:
   -	Coding style: perlstyle/perltidy
   -	Module management: CPAN
   -	Getting help: perldoc
   -	Windows api: Win32::OLE
   -	Debug/Profiling
-  -	Working/comparing  with other scripts: Bash, Python
+  -	Working/comparing with other scripts: Bash, Python
