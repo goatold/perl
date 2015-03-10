@@ -48,6 +48,7 @@ sub demo_scavar {
     my $hex = 0xf1;
     my $snot = 1.2E2;
     my $x5 = "x" x 5;
+    my $nullv = undef;
     my $vstr = v66.98.79;
     print "Test var1=$var1, int1=$int1 oct=$oct.\n";
     print "binary operation: ".(~$int1).(3|5).($int1^5).($int1&0)."\n";
@@ -136,8 +137,8 @@ sub demo_hash {
 # -- Auto Decrement operator decreases integer value by one
 # -> The arrow operator is mostly used in dereferencing a method or variable from an object or a class name
 
-# Subroutines
-sub dub {
+# Subroutines. prototype with arg list not suggested
+sub dub($) {
     my ($a) = @_;
     $a *= 2;
     print "dub: $a\n";
