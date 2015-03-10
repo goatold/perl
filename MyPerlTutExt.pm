@@ -89,12 +89,12 @@ sub demo_proc {
     my @options = ("-l", "-a", "-t");
     system("ls", @options);
     # file handle as pipe
-    open(WHO, "who|");
-    my @who = <WHO>;
-    open(USORT, "|sort -u");
-    print USORT @who;
-    close(WHO);
-    close(USORT);
+    open(my $WHO, "-|", "who");
+    my @who = <$WHO>;
+    open(my $USORT, "|-", "sort -u");
+    print $USORT @who;
+    close($WHO);
+    close($USORT);
     # fork process
     my $pid;
     if (!defined($pid = fork())) {
@@ -123,3 +123,22 @@ sub demo_proc {
     kill('HUP', $$);
 }
 
+# error handling with try/catch
+use Try::Tiny;
+sub demo_trycatch {
+    my ($self, @args) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
+    print "incoming args saved in \@args: @args\n";
+    my $tryrtv = try {
+        die "throwing fatal errors\n";
+        return 1;
+    } catch {
+        print "error: $_ catched\n";
+        return 0;
+    } finally {
+        print "whatever happened. endup here\n";
+    }; # notice the ; here
+    # return in try block does NOT return out calling sub
+    print "the retv of try is $tryrtv\n";
+}
