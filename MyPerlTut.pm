@@ -44,12 +44,12 @@ sub demo_scavar {
     my $var1 = "stra";
     my $int1 = 3;
     my $flt = 13.5;
-    my $oct = 0556;
+    my $oct = 016;
     my $hex = 0xf1;
     my $snot = 1.2E2;
     my $x5 = "x" x 5;
     my $vstr = v66.98.79;
-    print "Test var1=$var1, int1=$int1.\n";
+    print "Test var1=$var1, int1=$int1 oct=$oct.\n";
     print "binary operation: ".(~$int1).(3|5).($int1^5).($int1&0)."\n";
     
     my $hdoc=<<"EOV";
@@ -166,6 +166,7 @@ sub demo_flowcntl {
     }
 
 # switch case
+# replaced by experimental given/when since 5.10
     use Switch;
     switch($testv) {
         case 1 { print "int 1\n"; }
@@ -265,25 +266,25 @@ sub demo_fileio {
 # +> or w+ Reads, Writes, Creates, and Truncates 
 # +>> or a+ Reads, Writes, Appends, and Creates
     my $fname = "file.txt";
-    open(DATA, "+>", $fname);
-    print DATA "test file\n()";
-    print "cur position in file: ". tell(DATA) . "\n";
+    open(my $DATA, "+>", $fname);
+    print $DATA "test file\n()";
+    print "cur position in file: ". tell($DATA) . "\n";
     # seek FILEHANDLE,POSITION,WHENCE
     # where WHENCE: 0 start, 1 current, 2 eof
-    seek(DATA, -2, 2);
-    print "cur position in file: ". tell(DATA) . "\n";
-    print "cur char: ". getc(DATA) . "\n";
+    seek($DATA, -2, 2);
+    print "cur position in file: ". tell($DATA) . "\n";
+    print "cur char: ". getc($DATA) . "\n";
     print "rewind to start\n";
-    seek(DATA, 0, 0);
+    seek($DATA, 0, 0);
     my $tmpv;
-    read(DATA, $tmpv, 5);
+    read($DATA, $tmpv, 5);
     print "read 5 bytes: $tmpv\n";
-    print DATA "new data\n";
-    close(DATA);
-    open(DATA, "<", $fname);
-    my @data = <DATA>;
+    print $DATA "new data\n";
+    close($DATA);
+    open($DATA, "<", $fname);
+    my @data = <$DATA>;
     print "now file content:\n@data\n";
-    close(DATA);
+    close($DATA);
 
 # check file info
 # -A Script start time minus file last access time, in days. 
@@ -374,10 +375,13 @@ sub demo_regx {
 }
 
 # error report with Carp
-use Carp;
+use Carp qw/cluck confess/;
 
 sub func_err {
-    confess "stumbled on Error!\n @_";
+    # cluck is like warn and will print full stack trace
+    cluck "stumbled on Error!\n @_";
+    # confess is like die and will print full stack trace
+    confess "dying on Error!\n @_";
 }
 
 sub demo_carp {
