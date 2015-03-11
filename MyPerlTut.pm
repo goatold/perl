@@ -91,6 +91,8 @@ sub demo_array {
     splice(@arr, 2, 3, split("-","r1-r2-r3"));
     print "splice 3 items from offset 2, : @arr\n";
     print "args @ARGV\n";
+    my @evens = map { $_ * 2 } 1..3;
+    print Dumper(\@evens);
 }
 
 sub demo_hash {
@@ -143,6 +145,31 @@ sub dub($) {
     $a *= 2;
     print "dub: $a\n";
     return $a;
+}
+
+sub demo_strsort {
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
+    my $teststr = "The quick brown fox jumps over the lazy dog";
+    my $strlen = length($teststr);
+    # index returns 0 based position
+    my $indx1 = index($teststr, "he");
+    my $indx2 = index($teststr, "he", $indx1+1);
+    my $indx3 = rindex($teststr, "d");
+    my $origstr = substr($teststr, $indx3, 3, "sheep");
+    print "$origstr\nindx1: $indx1, indx2: $indx2\nafter substr: $teststr\n";
+    # sort array
+    my @instr = ("a1".."c3");
+    my @sortstr = sort { substr($a,1) <=> substr($b,1) } @instr;
+    print "input: @instr\nsorted: @sortstr\n";
+    my %inhash = ("x" => 9, "y" => 6, "c" => 2, "a" => 3, "r" => 3, "t" => 6);
+    print "origin table:\n";
+    my @hkeys = keys(%inhash);
+    print "$_=$inhash{$_}\n" for @hkeys;
+    print "sorted table:\n";
+    my @skeys = sort { $inhash{$a} <=> $inhash{$b} or $a cmp $b } @hkeys;
+    print "$_=$inhash{$_}\n" for @skeys;
 }
 
 sub demo_flowcntl {
@@ -227,10 +254,11 @@ sub demo_funcRef {
 }
 
 sub demo_datetime {
+    use Time::localtime;
     my ($self) = @_;
     my $mfn = (caller(0))[3];
     $self->prog($mfn);
-    my @ltime = localtime();
+    my $yday = localtime->yday();
 # sec, # seconds of minutes from 0 to 61 
 # min, # minutes of hour from 0 to 59 
 # hour, # hours of day from 0 to 24 
@@ -240,15 +268,14 @@ sub demo_datetime {
 # wday, # days since sunday 
 # yday, # days since January 1st 
 # isdst # hours of daylight savings time
-    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = @ltime;
-    print "\@ltime @ltime\n";
+    print "day of year: $yday\n";
     my $datestring = gmtime();
     print "\$datestring $datestring\n";
     my $epoc = time(); # seconds since 1/1/1970
     print "\$epoc $epoc\n";
 
     use POSIX qw(strftime);
-    $datestring = strftime "%Y %a %b %e %H:%M:%S", localtime;
+    $datestring = strftime("%Y %a %b %e %H:%M:%S", CORE::localtime());
     print "\$datestring $datestring\n";
 }
 
@@ -324,6 +351,30 @@ sub demo_fileio {
     } else {
         print "$fname not exists!\n";
     }
+}
+
+sub demo_dir {
+    use Cwd;
+    use File::stat;
+    my ($self) = @_;
+    my $mfn = (caller(0))[3];
+    $self->prog($mfn);
+    chdir "/nowhere" or warn "chdir failure: $!\n";
+    my $pwd =  cwd();
+    printf "current dir is: $pwd\n"; 
+    # globbing like shell
+    my $glbstr = "*.*";
+    my @glbarr = glob($glbstr);
+    print "$glbstr: @glbarr\n";
+    my $DH;
+    opendir $DH, $pwd or warn "opendir failure: $!\n";
+    foreach my $file (readdir $DH) {
+        if (-r $file) {
+            printf "$file last modified at: %s\n", 
+                   ctime(stat($file)->mtime);
+        }
+    }
+    closedir $DH
 }
 
 sub demo_regx {

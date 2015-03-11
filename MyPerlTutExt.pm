@@ -4,6 +4,7 @@ use MyPerlTut;
 use warnings;
 use strict;
 use vars qw(@ISA);
+use feature 'say';
 
 # subclass inherited from (MyPerlTut) further demo perl
 our @ISA = qw(MyPerlTut);
@@ -13,7 +14,7 @@ sub new {
     my ($class) = @_;
     # calling parent's constructor
     my $self = $class->SUPER::new($_[1]);
-    print "Welcome to Perl extended tutorial $self->{_usrname}\n";
+    say "Welcome to Perl extended tutorial $self->{_usrname}";
     bless $self, $class;
     return $self;
 }
@@ -60,14 +61,14 @@ CREATE TABLE test (
     $sth = $dbh->prepare("update test set name=?, descr=? where id=1;");
     $sth->execute("newname","updated text");
     my $nrows = $sth->rows;
-    print "updated $nrows rows\n";
+    say "updated $nrows rows";
     $sth->finish();
     # read db
     $sth = $dbh->prepare("select id, name, mtime, realv, descr from test;");
     $sth->execute();
-    print "data fetched:\n";
+    say "data fetched:";
     while(my @row = $sth->fetchrow_array()) {
-        print "id:$row[0], name:$row[1], mtime:$row[2], realv:$row[3], descr:$row[4]\n";
+        say "id:$row[0], name:$row[1], mtime:$row[2], realv:$row[3], descr:$row[4]";
     }
     $sth->finish();
     # cleanup db
@@ -76,15 +77,15 @@ CREATE TABLE test (
 }
 
 # run process in perl
-sub sigh_int {print "sig int handled\n";}
-sub sigh_hup {print "sig hup handled\n";}
+sub sigh_int {say "sig int handled";}
+sub sigh_hup {say "sig hup handled";}
 
 sub demo_proc {
     my ($self) = @_;
     my $mfn = (caller(0))[3];
     $self->prog($mfn);
     # backsticks
-    print "time now is ".`date`;
+    say "time now is ".`date`;
     # system calls
     my @options = ("-l", "-a", "-t");
     system("ls", @options);
@@ -92,7 +93,7 @@ sub demo_proc {
     open(my $WHO, "-|", "who");
     my @who = <$WHO>;
     open(my $USORT, "|-", "sort -u");
-    print $USORT @who;
+    say $USORT @who;
     close($WHO);
     close($USORT);
     # fork process
@@ -101,12 +102,12 @@ sub demo_proc {
         warn "fork failed: $!";
         return -1;
     } elsif ($pid == 0) {
-        print "crying kid\n";
+        say "crying kid";
         exec('echo "kid pid $$ sleeping";sleep 2');
     } else {
-        print "yelling parent\n";
+        say "yelling parent";
         my $rv = waitpid($pid, 0);
-        print "waitpid returned $rv: Kid pid($pid) status: $?\n";
+        say "waitpid returned $rv: Kid pid($pid) status: $?";
     }
     # signal handling
     my $sighup_h = $SIG{'HUP'};
@@ -116,7 +117,7 @@ sub demo_proc {
     kill('INT', $$);
     kill('HUP', $$);
     $SIG{'INT'} = 'IGNORE';
-    print "sigin ignored\n";
+    say "sigin ignored";
     kill('INT', $$);
     # restore old sig handler
     $SIG{'HUP'} = $sighup_h;
@@ -129,16 +130,16 @@ sub demo_trycatch {
     my ($self, @args) = @_;
     my $mfn = (caller(0))[3];
     $self->prog($mfn);
-    print "incoming args saved in \@args: @args\n";
+    say "incoming args saved in \@args: @args";
     my $tryrtv = try {
         die "throwing fatal errors\n";
         return 1;
     } catch {
-        print "error: $_ catched\n";
+        say "error: $_ catched";
         return 0;
     } finally {
-        print "whatever happened. endup here\n";
+        say "whatever happened. endup here";
     }; # notice the ; here
     # return in try block does NOT return out calling sub
-    print "the retv of try is $tryrtv\n";
+    say "the retv of try is $tryrtv";
 }
