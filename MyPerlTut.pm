@@ -3,6 +3,7 @@ package MyPerlTut;
 use warnings;
 use strict;
 use Data::Dumper;
+use Config;
 
 =blocl comments
 This package/class (MyPerlTut) demo basic perl
@@ -15,6 +16,7 @@ sub new {
     my $self = { _usrname => shift,
                  _progress => {}
                };
+    print "Running on OS: $Config{osname}, Arch: $Config{archname}\n";
     print "Welcome to basic Perl tutorial $self->{_usrname}\n";
     bless $self, $class;
     return $self;
@@ -194,12 +196,13 @@ sub demo_flowcntl {
     }
 
 # switch case
-# replaced by experimental given/when since 5.10
+# deprecated by experimental given/when since 5.10
     use Switch;
+    print "old switch case\n";
     switch($testv) {
         case 1 { print "int 1\n"; }
         case "a" { print "string a\n" }
-        case [1..10,42] { print "number in list\n" }
+        case [11..13,42] { print "number in list\n" }
         case (\@testarr) { print "number in array\n"; next; }
         case qr/\t+/ { print "pattern match\n" }
         case (\%testmap) { print "entry in hash\n"; next; }
@@ -207,6 +210,23 @@ sub demo_flowcntl {
         case (/\w+/) { print "pattern match \\w+\n"; }
         else { print "no match\n"; }
     }
+    use feature "switch";
+    print "new given when\n";
+    # Every "when" block is implicitly ended with a "break"
+    # use keyword continue to fall through to next case
+    given($testv) {
+        when(9) { print "int 9\n"; continue; }
+        when("9") { print "string 9\n"; continue; }
+        when([1..10,42]) { print "number in list\n"; continue; }
+        when(\@testarr) { print "number in array\n"; continue; }
+        when(qr/\t+/) { print "pattern match\n" }
+        when(\%testmap) { print "entry in hash\n"; continue; }
+        when(\&dub) { print "arg to subroutine\n" }
+        when(/\w+/) { print "pattern match \\w+\n"; }
+        default { print "no match\n"; }
+    }         
+
+
 
 # loops
 # while/until
@@ -299,6 +319,7 @@ sub demo_fileio {
     print "cur position in file: ". tell($DATA) . "\n";
     # seek FILEHANDLE,POSITION,WHENCE
     # where WHENCE: 0 start, 1 current, 2 eof
+    # caveat: open a file for mixed w&r in windows will mess up the file
     seek($DATA, -2, 2);
     print "cur position in file: ". tell($DATA) . "\n";
     print "cur char: ". getc($DATA) . "\n";
