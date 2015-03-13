@@ -113,7 +113,10 @@ sub demo_hash {
     print "hmap size: $hl\n";
     # remove elements in hash
     delete $hmap{'k2'};
-    print ("hash: ", %hmap, "\n");
+    my ($k, $v);
+    while( ($k,$v) = each(%hmap)) {
+        print("hmap{$k} => $v\n");
+    }
 }
 
 # Operator Description
@@ -406,16 +409,21 @@ sub demo_regx {
 # Match Regular Expression - m// 
 # Substitute Regular Expression - s///  
 # Transliterate Regular Expression - tr///
-    my $teststr = "abc 123 xyz 456";
+    my $teststr = "abc 123 xyz 456 lmn";
     my $mr = ($teststr =~ m/c.*\d /);
-    print "match result: $mr\n";
+    print "default greedy match result: $mr\n";
+    print "special matched var: \$` '$`', \$& '$&', \$' '$''\n";
+    $mr = ($teststr =~ m/c.*?\d /);
+    print "lazy match result: $mr\n";
     print "special matched var: \$` '$`', \$& '$&', \$' '$''\n";
     my ($m1, $m2) = ($teststr =~ m/.*(1.+) (4\d+)/);
-    print "matched str: $m1, $m2\n";
+    print "matched str: '$m1', '$m2'\n";
+    $teststr =~ s/(\w+)([\d ]+)(\w+)/\U$1\E$2\u\3/;
+    print "after change case: '$teststr'\n";
     $teststr =~ s/\d{2}/d_/;
-    print "after substitution: $teststr\n";
-    $teststr =~ tr/az/ZA/;
-    print "after translation: $teststr\n";
+    print "after substitution: '$teststr'\n";
+    $teststr =~ tr/Az/zA/;
+    print "after translation: '$teststr'\n";
 # match patterns
 # ^ Matches beginning of line.
 # $ Matches end of line. 
