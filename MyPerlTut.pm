@@ -5,6 +5,12 @@ use strict;
 use Data::Dumper;
 use Config;
 
+# inherit from Exporter
+use parent ("Exporter");
+# export sub dub
+our @EXPORT_OK;
+push @EXPORT_OK, "dub";
+
 =blocl comments
 This package/class (MyPerlTut) demo basic perl
 syntax and func
@@ -70,14 +76,19 @@ sub demo_array {
     my $self = shift;
     my $mfn = (caller(0))[3];
     $self->prog($mfn);
-    my @arr = ("text", 1, 1.2, 'anything', -44);
-    $arr[9] = "tail";
+	# define multidimensional array from list won't work
+    my @arr = ("text", (1, 1.2), 'anything', -44);
+    $arr[8] = "tail";
+	# multidimensional array
+	$arr[5] = ("x","y","z");
+	$arr[6] = [6, "66"];
     my $alen = @arr;
-    print "Arry arr len $alen, last indx=$#arr, last=$arr[-1]\n";
+    print "Arry arr len $alen, last indx=$#arr, last=$arr[-1] \$arr[6][1]=$arr[6][1]\n";
     # array slice and array func: sort, reverse
     print "array: @arr \n";
     print "silce [0..3]: ";
-    print "$_ " for sort(@arr[0..3]); print "\n";
+    print "$_ " for reverse sort(@arr[0..3]); print "\n";
+	print scalar reverse "1234";
     print "slice [2,4,9] @arr[2,4,9]\n";
     # remove undefined in array
     @arr = grep defined, @arr;
@@ -335,6 +346,7 @@ sub demo_fileio {
     close($DATA);
     open($DATA, "<", $fname);
     my @data = <$DATA>;
+	# when file is large, read file line by line: while(my $line = <$fh>) { 
     print "now file content:\n@data\n";
     close($DATA);
 

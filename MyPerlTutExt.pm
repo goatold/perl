@@ -1,13 +1,18 @@
 #!/usr/bin/perl
 package MyPerlTutExt;
-use MyPerlTut;
 use warnings;
 use strict;
-use vars qw(@ISA);
 use feature 'say';
 
 # subclass inherited from (MyPerlTut) further demo perl
-our @ISA = qw(MyPerlTut);
+#require MyPerlTut;
+#use vars qw(@ISA);
+#our @ISA = qw(MyPerlTut);
+use parent ('MyPerlTut');
+
+# export sub dub
+our @EXPORT_OK;
+push @EXPORT_OK, ("sigh_int", "sigh_hup");
 
 # override constructor
 sub new {
@@ -143,3 +148,8 @@ sub demo_trycatch {
     # return in try block does NOT return out calling sub
     say "the retv of try is $tryrtv";
 }
+
+1;
+
+__END__
+
