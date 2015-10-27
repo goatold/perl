@@ -78,18 +78,19 @@ sub demo_array {
     $self->prog($mfn);
 	# define multidimensional array from list won't work
     my @arr = ("text", (1, 1.2), 'anything', -44);
-    $arr[8] = "tail";
 	# multidimensional array
 	$arr[5] = ("x","y","z");
 	$arr[6] = [6, "66"];
-    my $alen = @arr;
-    print "Arry arr len $alen, last indx=$#arr, last=$arr[-1] \$arr[6][1]=$arr[6][1]\n";
-    # array slice and array func: sort, reverse
     print "array: @arr \n";
+    my $alen = @arr;
+    $arr[8] = "tail";
+    $arr[9] = \@ARGV;
+    print "Array arr len $alen, last indx=$#arr, last=$arr[-1] \$arr[5]=$arr[5] \$arr[6][1]=$arr[6][1] \$arr[9][1]=$arr[9][1]\n";
+    # array slice and array func: sort, reverse
     print "silce [0..3]: ";
     print "$_ " for reverse sort(@arr[0..3]); print "\n";
 	print scalar reverse "1234";
-    print "slice [2,4,9] @arr[2,4,9]\n";
+    print "slice [2,4,8] @arr[2,4,8]\n";
     # remove undefined in array
     @arr = grep defined, @arr;
     # pop push shift
@@ -309,8 +310,18 @@ sub demo_datetime {
     print "\$epoc $epoc\n";
 
     use POSIX qw(strftime);
-    $datestring = strftime("%Y %a %b %e %H:%M:%S", CORE::localtime());
+    $datestring = POSIX::strftime("%Y %a %b %e %H:%M:%S", CORE::localtime());
     print "\$datestring $datestring\n";
+
+    use DateTime::Format::Strptime;
+    my $strp = DateTime::Format::Strptime->new(
+     pattern   => '%a %b %e %H:%M:%S %Y',
+     on_error  => 'croak',
+    );
+
+    my $dt = $strp->parse_datetime('Fri May  1 21:13:53 2015');
+
+    print DateTime::Format::Strptime::strftime('%Y/%m/%d %H:%M:%S', $dt), "\n";
 }
 
 sub demo_fileio {
