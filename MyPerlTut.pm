@@ -66,6 +66,7 @@ Here document:
 lots of text
 multple lines
 var included $x5
+func call @{[substr($var1, -2)]}
 vstring $vstr
 EOV
     print "Test hdoc=$hdoc\n";
@@ -129,6 +130,9 @@ sub demo_hash {
     while( ($k,$v) = each(%hmap)) {
         print("hmap{$k} => $v\n");
     }
+	# multidimensional hash
+	my %mHash = (k1 => {kk1 => "vv1"});
+	print Dumper(\%mHash);
 }
 
 # Operator Description
